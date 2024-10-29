@@ -1,0 +1,55 @@
+{
+  "name": "task-board",
+  "columns": [
+    {
+      "name": "Todo",
+      "tasks": [
+        {
+          "id": "34bf89f9-84ab-465b-822f-2694e37c8a1e",
+          "name": "Task 1",
+          "description": "Set up project repository"
+        },
+        {
+          "id": "a6f9fbbd-9026-4b55-92b8-ff74f2f29e8e",
+          "name": "Task 2",
+          "description": "Create initial wireframes"
+        },
+        {
+          "id": "d2f5e457-5d30-44c0-bb89-ecf45678f4d3",
+          "name": "Task 3",
+          "description": "Research technology stack"
+        }
+      ]
+    },
+    {
+      "name": "In Progress",
+      "tasks": [
+        {
+          "id": "b1d9a5d2-4d3e-4c1c-b4e8-05b9b4c2f67b",
+          "name": "Task 4",
+          "description": "Implement authentication"
+        },
+        {
+          "id": "7c1db63f-2086-4b65-94c4-bb681d9e90f9",
+          "name": "Task 5",
+          "description": "Set up database schema"
+        }
+      ]
+    },
+    {
+      "name": "Complete",
+      "tasks": [
+        {
+          "id": "3c634fc1-97f6-4043-97b7-80cd73e15412",
+          "name": "Task 6",
+          "description": "Finish API endpoints"
+        },
+        {
+          "id": "ab3c0f7b-97be-4a89-93cf-6168b69c8bb5",
+          "name": "Task 7",
+          "description": "Deploy application to production"
+        }
+      ]
+    }
+  ]
+}
