@@ -1,6 +1,7 @@
 <script setup>
 import { useBoardStore } from "~/stores/boardStore";
 
+const toast = useToast();
 const route = useRoute();
 const router = useRouter();
 const boardStore = useBoardStore();
@@ -10,6 +11,12 @@ const task = computed(() => {
 });
 
 function deleteTask() {
+  toast.add({
+    title: "Task Deleted",
+    description: `${task.value.name} has been deleted`,
+    icon: "i-heroicons-trash",
+    color: "red",
+  });
   boardStore.deleteTask(route.params.id);
   router.push("/");
 }

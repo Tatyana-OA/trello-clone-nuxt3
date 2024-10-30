@@ -3,5 +3,6 @@
     <div>
       <NuxtPage />
     </div>
+    <UNotifications />
   </Html>
 </template>
