@@ -1,7 +1,15 @@
 <script setup>
 import { useBoardStore } from "~/stores/boardStore";
 const boardStore = useBoardStore();
+const route = useRoute();
+const router = useRouter();
 const columnName = ref("");
+const isModalOpen = computed(() => {
+  return route.name === "index-tasks-id";
+});
+const closeModal = () => {
+  router.push("/");
+};
 
 const addColumn = () => {
   boardStore.addColumn(columnName.value);
@@ -31,5 +39,9 @@ const deleteColumn = (columnIdx) => {
         />
       </UContainer>
     </main>
+    <!-- Child routes under index folder will be displayed -->
+    <div v-show="isModalOpen" class="task-bg" @click.self="closeModal">
+      <NuxtPage :key="route.fullPath" />
+    </div>
   </div>
 </template>
