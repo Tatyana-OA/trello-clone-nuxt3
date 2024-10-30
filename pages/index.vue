@@ -15,9 +15,6 @@ const addColumn = () => {
   boardStore.addColumn(columnName.value);
   columnName.value = "";
 };
-const deleteColumn = (columnIdx) => {
-  boardStore.deleteColumn(columnIdx);
-};
 </script>
 <template>
   <div class="board-wrapper">

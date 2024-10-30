@@ -18,12 +18,6 @@ const router = useRouter();
 const editNameState = ref(false);
 const newTaskName = ref("");
 
-function deleteColumn(columnIndex) {
-  boardStore.deleteColumn(columnIndex);
-}
-function goToTask(id) {
-  router.push(`/tasks/${id}`);
-}
 function addTask() {
   boardStore.addTask({
     taskName: newTaskName.value,
@@ -31,32 +25,59 @@ function addTask() {
   });
   newTaskName.value = "";
 }
-function pickUpTask(event, { fromTaskIndex, fromColumnIndex }) {
-  // Only allow movement effect
-  event.dataTransfer.effectAllowed = "move";
-  event.dataTransfer.dropEffect = "move";
-  event.dataTransfer.setData("from-column-index", fromColumnIndex);
-  event.dataTransfer.setData("from-task-index", fromTaskIndex);
+
+function deleteColumn(columnIndex) {
+  boardStore.deleteColumn(columnIndex);
 }
 
-function dropTask(event, toColumnIndex) {
+function dropItem(event, toColumnIndex) {
+  const type = event.dataTransfer.getData("type");
   const fromColumnIndex = event.dataTransfer.getData("from-column-index");
-  const fromTaskIndex = event.dataTransfer.getData("from-task-index");
 
-  boardStore.moveTask({
-    taskIndex: fromTaskIndex,
-    fromColumnIndex,
-    toColumnIndex,
-  });
+  if (type === "task") {
+    const fromTaskIndex = event.dataTransfer.getData("from-task-index");
+
+    boardStore.moveTask({
+      taskIndex: fromTaskIndex,
+      fromColumnIndex,
+      toColumnIndex,
+    });
+  } else if (type === "column") {
+    boardStore.moveColumn({
+      fromColumnIndex,
+      toColumnIndex,
+    });
+  }
+}
+
+function goToTask(taskId) {
+  router.push(`/tasks/${taskId}`);
+}
+
+function pickupColumn(event, fromColumnIndex) {
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.dropEffect = "move";
+  event.dataTransfer.setData("type", "column");
+  event.dataTransfer.setData("from-column-index", fromColumnIndex);
+}
+
+function pickupTask(event, { fromColumnIndex, fromTaskIndex }) {
+  event.dataTransfer.effectAllowed = "move";
+  event.dataTransfer.dropEffect = "move";
+  event.dataTransfer.setData("type", "task");
+  event.dataTransfer.setData("from-column-index", fromColumnIndex);
+  event.dataTransfer.setData("from-task-index", fromTaskIndex);
 }
 </script>
 
 <template>
   <UContainer
     class="column"
+    draggable="true"
+    @dragstart.self="pickupColumn($event, columnIndex)"
     @dragenter.prevent
     @dragover.prevent
-    @drop.stop="dropTask($event, columnIndex)"
+    @drop.stop="dropItem($event, columnIndex)"
   >
     <div class="column-header mb-4">
       <div>
@@ -79,13 +100,13 @@ function dropTask(event, toColumnIndex) {
     <ul>
       <li v-for="(task, taskIndex) in column.tasks" :key="task.id">
         <UCard
-          class="mb-4 cursor-pointer"
+          class="mb-4"
           @click="goToTask(task.id)"
           draggable="true"
           @dragstart="
-            pickUpTask($event, {
-              fromTaskIndex: taskIndex,
+            pickupTask($event, {
               fromColumnIndex: columnIndex,
+              fromTaskIndex: taskIndex,
             })
           "
         >
@@ -95,12 +116,11 @@ function dropTask(event, toColumnIndex) {
       </li>
     </ul>
     <UInput
+      v-model="newTaskName"
       type="text"
       placeholder="Create new task"
       icon="i-heroicons-plus-circle-solid"
-      class="input"
-      @keyup.enter="addTask()"
-      v-model="newTaskName"
+      @keyup.enter="addTask"
     />
   </UContainer>
 </template>
