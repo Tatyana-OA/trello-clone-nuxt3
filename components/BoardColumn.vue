@@ -101,7 +101,7 @@ function pickupTask(event, { fromColumnIndex, fromTaskIndex }) {
     <ul>
       <li v-for="(task, taskIndex) in column.tasks" :key="task.id">
         <UCard
-          class="mb-4"
+          class="mb-4 cursor-pointer"
           @click="goToTask(task.id)"
           draggable="true"
           @dragstart="

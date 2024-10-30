@@ -79,7 +79,6 @@ export const useBoardStore = defineStore("boardStore", () => {
   }) {
     const column = board.value.columns.splice(fromColumnIndex, 1)[0];
     board.value.columns.splice(toColumnIndex, 0, column);
-    console.log(board.value.columns);
   }
 
   return {
